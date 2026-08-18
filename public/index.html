@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MICROBOSS</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23FFC709'/><text x='50' y='68' font-size='52' font-family='Arial Black' font-weight='900' text-anchor='middle' fill='%230A1628'>M</text></svg>">
+  <link rel="stylesheet" href="css/styles.css?v=15">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Oxanium:wght@400;500;600;700&family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- AUTH VIEW -->
+  <div id="authView" class="auth-wrap" style="display:none;">
+    <div class="auth-card">
+      <div class="brand">
+            <div class="brand-word">MICROBOSS<span class="brand-tm">TM</span></div>
+        <div class="brand-sub">DIGITAL MEDIA AUTOMATION SYSTEM</div>
+      </div>
+      <div class="tabs">
+        <button class="tab-btn active" id="tabLoginBtn" onclick="showTab('login')">Login</button>
+        <button class="tab-btn" id="tabRegisterBtn" onclick="showTab('register')">Register</button>
+      </div>
+      <form id="loginForm" onsubmit="event.preventDefault(); doLogin()">
+        <div class="form-group">
+          <label>Username or Email</label>
+          <input class="input" id="loginIdentifier" type="text" placeholder="Full Name / Nickname / Email" autocomplete="username" required oninput="clearLoginError()">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="pw-field">
+            <input class="input" id="loginPassword" type="password" placeholder="••••••••" autocomplete="current-password" required oninput="clearLoginError()">
+            <button type="button" class="pw-toggle" onclick="togglePw('loginPassword', this)">👁</button>
+          </div>
+        </div>
+        <div id="loginError" class="form-error" style="display:none;"></div>
+        <button type="submit" class="btn btn-gold btn-block">Login</button>
+        <div class="forgot-link"><button type="button" class="link-btn" onclick="openForgotModal()">Forgot password?</button></div>
+      </form>
+      <form id="registerForm" style="display:none;" onsubmit="event.preventDefault(); doRegister()">
+        <div class="form-group">
+          <label>Full Name <span class="req">*</span></label>
+          <input class="input" id="regUsername" type="text" placeholder="Your full name" required>
+        </div>
+        <div class="form-group">
+          <label>Nickname <span class="req">*</span></label>
+          <input class="input" id="regNickname" type="text" placeholder="যেমন: Siam, Rahul" required>
+        </div>
+        <div class="form-group">
+          <label>Office ID <span class="req">*</span></label>
+          <input class="input" id="regOfficeId" type="text" placeholder="e.g. MB-0001" required>
+        </div>
+        <div class="form-group">
+          <label>Office Name <span class="req">*</span></label>
+          <input class="input" id="regOfficeName" type="text" placeholder="e.g. MICROBOSS Media" required>
+        </div>
+        <div class="form-group">
+          <label>Designation <span class="req">*</span></label>
+          <select class="input" id="regDesignation" required>
+            <option value="">— Select your Designation —</option>
+          </select>
+          <div class="small" style="margin-top:4px;">আপনার এক্সেস পাবেন Designation অনুযায়ী</div>
+        </div>
+        <div class="form-group">
+          <label>Email <span class="req">*</span></label>
+          <input class="input" id="regEmail" type="email" placeholder="you@example.com" required>
+        </div>
+        <div class="form-group">
+          <label>Phone <span class="req">*</span> <span class="small">(দেশের কোডসহ)</span></label>
+          <input class="input" id="regPhone" type="text" placeholder="+880 1712-345678" required>
+          <div class="small" style="margin-top:4px;">দেশের কোড দিয়েই লিখুন — যেকোনো দেশের কোড হতে পারে (যেমন: +880, +1, +971)। কোড ছাড়া জমা হলে রিজেক্ট হবে।</div>
+        </div>
+        <div class="form-group">
+          <label>WhatsApp Number <span class="req">*</span> <span class="small">(যে নম্বরে WhatsApp আছে)</span></label>
+          <input class="input" id="regWhatsapp" type="text" placeholder="+880 1XXX-XXXXXX" required>
+          <div class="small" style="margin-top:4px;">WhatsApp আছে এমন নম্বরটি দেশের কোডসহ দিন — টিমের সাথে যোগাযোগের জন্য।</div>
+        </div>
+        <div class="form-group">
+          <label>Facebook Profile Link <span class="req">*</span></label>
+          <input class="input" id="regFb" type="text" placeholder="https://facebook.com/..." required>
+        </div>
+        <div class="form-group">
+          <label>Birth Date <span class="req">*</span></label>
+          <input class="input" id="regBirth" type="date" required>
+        </div>
+        <div class="form-group">
+          <label>Password <span class="req">*</span></label>
+          <div class="pw-field">
+            <input class="input" id="regPassword" type="password" placeholder="Min 6 characters" autocomplete="new-password" required oninput="clearRegPwError()">
+            <button type="button" class="pw-toggle" onclick="togglePw('regPassword', this)">👁</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password <span class="req">*</span></label>
+          <div class="pw-field">
+            <input class="input" id="regConfirmPassword" type="password" placeholder="Retype password" autocomplete="new-password" required oninput="clearRegPwError()">
+            <button type="button" class="pw-toggle" onclick="togglePw('regConfirmPassword', this)">👁</button>
+          </div>
+        </div>
+        <div id="regError" class="form-error" style="display:none;"></div>
+        <button type="submit" class="btn btn-gold btn-block">Create Account</button>
+        <div class="small" style="text-align:center;margin-top:10px;">রেজিস্ট্রেশন জমা হওয়ার পর <b>Owner/Manager-এর অনুমোদন</b> পেলেই লগইন করা যাবে।</div>
+      </form>
+    </div>
+  </div>
+
+  <!-- APP VIEW -->
+  <div id="appView" class="app" style="display:none;">
+    <aside class="sidebar" id="sidebar">
+      <div class="sb-head">
+        <span class="sb-title">MENU</span>
+      </div>
+      <div class="sb-nav-wrap">
+        <button class="sb-slide-btn sb-up" id="sbUpBtn" title="Slide up" onclick="slideNav(-1)">▲</button>
+        <nav class="nav" id="sbNav">
+        <div class="user-chip">
+          <div class="avatar" id="myAvatar">?</div>
+          <div>
+            <div class="uname" id="myName">—</div>
+            <div class="urole" id="myRole">—</div>
+          </div>
+          <button class="logout-btn" title="Logout" onclick="doLogout()">⏻</button>
+        </div>
+        <div class="nav-item active" data-view="dashboard" onclick="go('dashboard')"><span class="icon">📊</span> Dashboard</div>
+        <div class="nav-item" data-view="upload" onclick="go('upload')"><span class="icon">📤</span> Upload Content</div>
+        <div class="nav-item" data-view="contents" onclick="openContents()"><span class="icon">🗂️</span> All Contents</div>
+        <div class="nav-item" data-view="archive" onclick="go('archive')"><span class="icon">🗄️</span> Archive</div>
+        <div class="nav-item" data-view="sponsors" onclick="go('sponsors')"><span class="icon">🤝</span> Sponsors</div>
+        <div class="nav-item" data-view="programs" onclick="go('programs')"><span class="icon">📺</span> Program</div>
+        <div class="nav-item" data-view="notices" onclick="go('notices')"><span class="icon">📢</span> Notices</div>
+        <div class="nav-item" data-view="captions" onclick="go('captions')"><span class="icon">💬</span> LIVE TITLE</div>
+        <div class="nav-item" data-view="oneeye" onclick="go('oneeye')"><span class="icon">👁</span> Youtube Upload Track</div>
+        <div class="nav-item" data-view="reports" onclick="go('reports')"><span class="icon">📄</span> Reports</div>
+        <div class="nav-item" data-view="team" id="navTeam" onclick="go('team')" style="display:none;"><span class="icon">👥</span> Team</div>
+        <div class="nav-item" data-view="checkin" onclick="go('checkin')"><span class="icon">⏱️</span> Check In</div>
+        <div class="nav-item" data-view="ranking" onclick="go('ranking')"><span class="icon">🏆</span> RANKING</div>
+        <div class="nav-item" data-view="trash" onclick="go('trash')"><span class="icon">🗑️</span> TRASH</div>
+        <div class="nav-item" data-view="settings" onclick="go('settings')"><span class="icon">⚙️</span> Settings</div>
+        </nav>
+        <button class="sb-slide-btn sb-down" id="sbDownBtn" title="Slide down" onclick="slideNav(1)">▼</button>
+      </div>
+      <button class="sb-collapse-btn" id="sbCollapseBtn" title="Collapse sidebar" onclick="toggleSidebar(true)">◀</button>
+    </aside>
+    <button class="sb-expand-fab" id="sbExpandBtn" title="Expand sidebar" onclick="toggleSidebar(false)">▶</button>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="flex">
+          <button class="hamburger" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+        </div>
+        <div class="topbar-widget" id="topWidget">
+          <div class="cin-top" id="cinTop" onclick="headerCheckInToggle()" title="Check In / Check Out">
+            <div class="cin-top-btn" id="cinTopBtn">✅ CHECK IN</div>
+            <div class="cin-top-time" id="cinTopTime" style="display:none;"></div>
+          </div>
+          <div class="brand brand-topbar" onclick="go('dashboard')" title="Go to Dashboard" style="cursor:pointer;">
+        <div class="brand-word">MICROBOSS<span class="brand-tm">TM</span></div>
+            <div class="brand-sub">DIGITAL MEDIA AUTOMATION SYSTEM</div>
+          </div>
+          <div class="clock" id="topClock"><span class="tc-time">--:--:--</span><span class="tc-date">—</span></div>
+          <div class="weather" id="topWeather"><span class="w-temp">--</span><span class="w-meta">Weather…</span></div>
+        </div>
+        <div class="top-right">
+          <div class="live-now" id="liveNow"></div>
+          <div class="top-actions">
+            <button class="bell-main" id="bellBtn" title="Notifications" onclick="openNotifications()"><span class="icon">🔔</span> Notifications<span class="badge-dot" id="bellBadge" style="display:none;">0</span></button>
+            <button class="icon-btn" id="soundBtn" title="Toggle sound alerts" onclick="toggleSound()">🔊</button>
+            <button class="icon-btn" id="refreshBtn" title="Refresh" onclick="doRefresh()">⟳</button>
+            <button class="icon-btn logout-top" id="topLogoutBtn" title="Logout" onclick="doLogout()">⏻</button>
+          </div>
+        </div>
+      </div>
+      <div id="alertsArea"></div>
+      <div id="viewContainer"></div>
+    </div>
+  </div>
+
+  <div id="modalRoot"></div>
+  <div class="toast-wrap" id="toastWrap"></div>
+
+  <!-- FLOATING FAB STACK -->
+  <div class="fab-stack" id="fabStack">
+    <div class="qu-panel" id="quickUploadPanel">
+      <div class="qu-head">
+        <span>⚡ Quick Upload</span>
+        <button class="qu-close" onclick="toggleQuickUpload()" title="Close">✕</button>
+      </div>
+      <div class="qu-body">
+        <div class="qu-row">
+          <div class="qu-field" style="flex:1;">
+            <label>Upload Date <span id="quDateDay" class="tag tag-gold" style="font-size:9px;vertical-align:middle;display:none;"></span></label>
+            <input class="input" type="date" id="quDate" onchange="quUpDateDay(); quRefreshSlot()">
+          </div>
+          <div class="qu-field" style="flex:1.6;">
+            <label>SLOT <span class="small">(time &amp; program)</span></label>
+            <select class="input" id="quSlot" onchange="onSlotChange('quSlot')"></select>
+            <input class="input" id="quSlotCustom" type="text" placeholder="Type your own slot name…" style="display:none;margin-top:6px;">
+          </div>
+        </div>
+        <div class="qu-field">
+          <label>Content Title <span class="req">*</span></label>
+          <input class="input" id="quHeadline" type="text" placeholder="Video title / headline">
+        </div>
+        <div class="qu-row">
+          <div class="qu-field" style="flex:1;">
+            <label>Type</label>
+            <select class="input" id="quCategory">
+              <option value="video">🎬 VIDEO</option>
+              <option value="static">🖼️ STATIC</option>
+            </select>
+          </div>
+          <div class="qu-field" style="flex:1.4;">
+            <label>Sponsor <span class="small">(if any)</span></label>
+            <select class="input" id="quSponsor"><option value="">— No Sponsor —</option></select>
+          </div>
+        </div>
+        <div class="qu-link-label">🔗 Platform Links</div>
+        <div id="quLinks"></div>
+        <button class="btn btn-gold" style="width:100%;" onclick="quickSaveUpload()">💾 Save Content</button>
+      </div>
+    </div>
+    <div class="qu-panel" id="sponsorPanel">
+      <div class="qu-head">
+        <span>📊 Sponsor Live Tracker</span>
+        <button class="qu-close" onclick="toggleSponsorPanel()" title="Close">✕</button>
+      </div>
+      <div class="qu-scroll" id="sponsorPanelBody"></div>
+      <div class="qu-foot">
+        <button class="btn btn-gold btn-sm" style="width:100%;" onclick="go('sponsors'); toggleSponsorPanel();">Manage Sponsors →</button>
+      </div>
+    </div>
+    <div class="qu-fab" id="sponsorTrackerFab" title="Sponsor Live Tracker" onclick="toggleSponsorPanel()">📊</div>
+    <div class="qu-fab" id="quickUploadFab" title="Quick Upload" onclick="toggleQuickUpload()">📤</div>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <div>LOADING…</div>
+  </div>
+
+  <script src="js/app.js?v=48"></script>
+</body>
+</html>

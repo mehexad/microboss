@@ -1,0 +1,11 @@
+node_modules/
+.node/
+data/*.db
+data/*.db-shm
+data/*.db-wal
+data/app.db
+server.log
+*.log
+.git/
+Start MICROBOSS.command
+data/programs_backup_before_weekly.json

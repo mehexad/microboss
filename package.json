@@ -1,0 +1,15 @@
+{
+  "name": "microboss",
+  "version": "1.0.0",
+  "description": "MICROBOSS - Content team upload tracker, sponsor tracker & PDF/CSV reports",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "pdfkit": "^0.15.0"
+  }
+}
