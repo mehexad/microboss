@@ -3,7 +3,7 @@ services:
     name: microboss
     runtime: docker
     plan: free
-    healthCheckPath: /api/me
+    healthCheckPath: /
     envVars:
       - key: NODE_ENV
         value: production
