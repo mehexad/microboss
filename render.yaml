@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: microboss
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/me
+    envVars:
+      - key: NODE_ENV
+        value: production
